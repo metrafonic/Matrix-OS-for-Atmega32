@@ -3,29 +3,29 @@ main.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         000002a6  00000000  00000000  00000094  2**1
+  0 .text         0000046e  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000034  00800060  000002a6  0000033a  2**0
+  1 .data         0000004c  00800060  0000046e  00000502  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000002  00800094  00800094  0000036e  2**0
+  2 .bss          00000002  008000ac  008000ac  0000054e  2**0
                   ALLOC
-  3 .debug_aranges 00000020  00000000  00000000  0000036e  2**0
+  3 .debug_aranges 00000020  00000000  00000000  0000054e  2**0
                   CONTENTS, READONLY, DEBUGGING
-  4 .debug_pubnames 0000008b  00000000  00000000  0000038e  2**0
+  4 .debug_pubnames 0000008b  00000000  00000000  0000056e  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   000006a8  00000000  00000000  00000419  2**0
+  5 .debug_info   000006a4  00000000  00000000  000005f9  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 0000013d  00000000  00000000  00000ac1  2**0
+  6 .debug_abbrev 00000185  00000000  00000000  00000c9d  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   00000463  00000000  00000000  00000bfe  2**0
+  7 .debug_line   00000500  00000000  00000000  00000e22  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000070  00000000  00000000  00001064  2**2
+  8 .debug_frame  00000070  00000000  00000000  00001324  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00000170  00000000  00000000  000010d4  2**0
+  9 .debug_str    000001d8  00000000  00000000  00001394  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    0000033f  00000000  00000000  00001244  2**0
+ 10 .debug_loc    000002c7  00000000  00000000  0000156c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 000000d8  00000000  00000000  00001583  2**0
+ 11 .debug_ranges 00000090  00000000  00000000  00001833  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -65,8 +65,8 @@ Disassembly of section .text:
   60:	10 e0       	ldi	r17, 0x00	; 0
   62:	a0 e6       	ldi	r26, 0x60	; 96
   64:	b0 e0       	ldi	r27, 0x00	; 0
-  66:	e6 ea       	ldi	r30, 0xA6	; 166
-  68:	f2 e0       	ldi	r31, 0x02	; 2
+  66:	ee e6       	ldi	r30, 0x6E	; 110
+  68:	f4 e0       	ldi	r31, 0x04	; 4
   6a:	02 c0       	rjmp	.+4      	; 0x70 <.do_copy_data_start>
 
 0000006c <.do_copy_data_loop>:
@@ -74,13 +74,13 @@ Disassembly of section .text:
   6e:	0d 92       	st	X+, r0
 
 00000070 <.do_copy_data_start>:
-  70:	a4 39       	cpi	r26, 0x94	; 148
+  70:	ac 3a       	cpi	r26, 0xAC	; 172
   72:	b1 07       	cpc	r27, r17
   74:	d9 f7       	brne	.-10     	; 0x6c <.do_copy_data_loop>
 
 00000076 <__do_clear_bss>:
   76:	10 e0       	ldi	r17, 0x00	; 0
-  78:	a4 e9       	ldi	r26, 0x94	; 148
+  78:	ac ea       	ldi	r26, 0xAC	; 172
   7a:	b0 e0       	ldi	r27, 0x00	; 0
   7c:	01 c0       	rjmp	.+2      	; 0x80 <.do_clear_bss_start>
 
@@ -88,11 +88,11 @@ Disassembly of section .text:
   7e:	1d 92       	st	X+, r1
 
 00000080 <.do_clear_bss_start>:
-  80:	a6 39       	cpi	r26, 0x96	; 150
+  80:	ae 3a       	cpi	r26, 0xAE	; 174
   82:	b1 07       	cpc	r27, r17
   84:	e1 f7       	brne	.-8      	; 0x7e <.do_clear_bss_loop>
   86:	0e 94 83 00 	call	0x106	; 0x106 <main>
-  8a:	0c 94 51 01 	jmp	0x2a2	; 0x2a2 <_exit>
+  8a:	0c 94 35 02 	jmp	0x46a	; 0x46a <_exit>
 
 0000008e <__bad_interrupt>:
   8e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -117,7 +117,7 @@ void Peek_A_Boo(){
   9e:	08 95       	ret
 
 000000a0 <Check_If_MrLCD_IsBuisy>:
-	
+		}
 	}
 }
 
@@ -227,374 +227,645 @@ void Send_A_String(char *StringofCharacters){
  104:	08 95       	ret
 
 00000106 <main>:
-void Send_A_Command(unsigned char command);
 void Send_A_Character(unsigned char character);
 void Send_A_String(char *StringofCharacters);
 int prosent = 0;
 
-void main(void){
- 106:	ef 92       	push	r14
- 108:	ff 92       	push	r15
- 10a:	0f 93       	push	r16
- 10c:	1f 93       	push	r17
- 10e:	cf 93       	push	r28
- 110:	df 93       	push	r29
 
+void main(void){
+ 106:	2f 92       	push	r2
+ 108:	3f 92       	push	r3
+ 10a:	4f 92       	push	r4
+ 10c:	5f 92       	push	r5
+ 10e:	6f 92       	push	r6
+ 110:	7f 92       	push	r7
+ 112:	8f 92       	push	r8
+ 114:	9f 92       	push	r9
+ 116:	af 92       	push	r10
+ 118:	bf 92       	push	r11
+ 11a:	cf 92       	push	r12
+ 11c:	df 92       	push	r13
+ 11e:	ef 92       	push	r14
+ 120:	ff 92       	push	r15
+ 122:	0f 93       	push	r16
+ 124:	1f 93       	push	r17
+ 126:	df 93       	push	r29
+ 128:	cf 93       	push	r28
+ 12a:	cd b7       	in	r28, 0x3d	; 61
+ 12c:	de b7       	in	r29, 0x3e	; 62
+ 12e:	6c 97       	sbiw	r28, 0x1c	; 28
+ 130:	0f b6       	in	r0, 0x3f	; 63
+ 132:	f8 94       	cli
+ 134:	de bf       	out	0x3e, r29	; 62
+ 136:	0f be       	out	0x3f, r0	; 63
+ 138:	cd bf       	out	0x3d, r28	; 61
+
+	int Pressed = 0;
+	int Pressed_Confidence_Level = 0;
+	int Released_Confidence_Level = 0;
+	
+	DDRC |=1<<LED | 0<<Button;
+ 13a:	a7 9a       	sbi	0x14, 7	; 20
+	PORTC |=1<<LED | 1<<Button;
+ 13c:	85 b3       	in	r24, 0x15	; 21
+ 13e:	80 6c       	ori	r24, 0xC0	; 192
+ 140:	85 bb       	out	0x15, r24	; 21
 	DataDir_MrLCDsControl |= 1<<LightSwitch | 1<<ReadWrite |1<<BiPolarMood;
- 112:	81 b3       	in	r24, 0x11	; 17
- 114:	84 6a       	ori	r24, 0xA4	; 164
- 116:	81 bb       	out	0x11, r24	; 17
+ 142:	81 b3       	in	r24, 0x11	; 17
+ 144:	84 6a       	ori	r24, 0xA4	; 164
+ 146:	81 bb       	out	0x11, r24	; 17
     milliseconds can be achieved.
  */
 void
 _delay_loop_2(uint16_t __count)
 {
 	__asm__ volatile (
- 118:	80 e3       	ldi	r24, 0x30	; 48
- 11a:	95 e7       	ldi	r25, 0x75	; 117
- 11c:	01 97       	sbiw	r24, 0x01	; 1
- 11e:	f1 f7       	brne	.-4      	; 0x11c <main+0x16>
+ 148:	80 e3       	ldi	r24, 0x30	; 48
+ 14a:	95 e7       	ldi	r25, 0x75	; 117
+ 14c:	01 97       	sbiw	r24, 0x01	; 1
+ 14e:	f1 f7       	brne	.-4      	; 0x14c <main+0x46>
 	_delay_ms(15);
 	
 	Send_A_Command(0x01); //Clears screen 0x01 == 00000001
- 120:	81 e0       	ldi	r24, 0x01	; 1
- 122:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
- 126:	80 ea       	ldi	r24, 0xA0	; 160
- 128:	9f e0       	ldi	r25, 0x0F	; 15
- 12a:	01 97       	sbiw	r24, 0x01	; 1
- 12c:	f1 f7       	brne	.-4      	; 0x12a <main+0x24>
+ 150:	81 e0       	ldi	r24, 0x01	; 1
+ 152:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
+ 156:	60 ea       	ldi	r22, 0xA0	; 160
+ 158:	e6 2e       	mov	r14, r22
+ 15a:	6f e0       	ldi	r22, 0x0F	; 15
+ 15c:	f6 2e       	mov	r15, r22
+ 15e:	c7 01       	movw	r24, r14
+ 160:	01 97       	sbiw	r24, 0x01	; 1
+ 162:	f1 f7       	brne	.-4      	; 0x160 <main+0x5a>
 	_delay_ms(2);
 	Send_A_Command(0x38);
- 12e:	88 e3       	ldi	r24, 0x38	; 56
- 130:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
+ 164:	88 e3       	ldi	r24, 0x38	; 56
+ 166:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
     can be achieved.
 */
 void
 _delay_loop_1(uint8_t __count)
 {
 	__asm__ volatile (
- 134:	15 e8       	ldi	r17, 0x85	; 133
- 136:	81 2f       	mov	r24, r17
- 138:	8a 95       	dec	r24
- 13a:	f1 f7       	brne	.-4      	; 0x138 <main+0x32>
+ 16a:	15 e8       	ldi	r17, 0x85	; 133
+ 16c:	81 2f       	mov	r24, r17
+ 16e:	8a 95       	dec	r24
+ 170:	f1 f7       	brne	.-4      	; 0x16e <main+0x68>
 	_delay_us(50);
 	Send_A_Command(0b00001110);
- 13c:	8e e0       	ldi	r24, 0x0E	; 14
- 13e:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
- 142:	1a 95       	dec	r17
- 144:	f1 f7       	brne	.-4      	; 0x142 <main+0x3c>
+ 172:	8e e0       	ldi	r24, 0x0E	; 14
+ 174:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
+ 178:	1a 95       	dec	r17
+ 17a:	f1 f7       	brne	.-4      	; 0x178 <main+0x72>
+	Send_A_Character(0x64); //
+	Send_A_Character(0x69); //
+	Send_A_Character(0x61); //
+	*/
+
+		Send_A_Command(0x01); //Clears screen 0x01 == 00000001
+ 17c:	81 e0       	ldi	r24, 0x01	; 1
+ 17e:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
     milliseconds can be achieved.
  */
 void
 _delay_loop_2(uint16_t __count)
 {
 	__asm__ volatile (
- 146:	00 ea       	ldi	r16, 0xA0	; 160
- 148:	1f e0       	ldi	r17, 0x0F	; 15
-	Send_A_Character(0x64); //
-	Send_A_Character(0x69); //
-	Send_A_Character(0x61); //
-	*/
-	while(1){
-		Send_A_Command(0x01); //Clears screen 0x01 == 00000001
- 14a:	c8 ec       	ldi	r28, 0xC8	; 200
- 14c:	d0 e0       	ldi	r29, 0x00	; 0
- 14e:	80 e3       	ldi	r24, 0x30	; 48
- 150:	e8 2e       	mov	r14, r24
- 152:	85 e7       	ldi	r24, 0x75	; 117
- 154:	f8 2e       	mov	r15, r24
- 156:	81 e0       	ldi	r24, 0x01	; 1
- 158:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
- 15c:	c8 01       	movw	r24, r16
- 15e:	01 97       	sbiw	r24, 0x01	; 1
- 160:	f1 f7       	brne	.-4      	; 0x15e <main+0x58>
+ 182:	c7 01       	movw	r24, r14
+ 184:	01 97       	sbiw	r24, 0x01	; 1
+ 186:	f1 f7       	brne	.-4      	; 0x184 <main+0x7e>
 		_delay_ms(2);
 		Send_A_String("Booting");
- 162:	80 e6       	ldi	r24, 0x60	; 96
- 164:	90 e0       	ldi	r25, 0x00	; 0
- 166:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
- 16a:	84 ef       	ldi	r24, 0xF4	; 244
- 16c:	91 e0       	ldi	r25, 0x01	; 1
- 16e:	fe 01       	movw	r30, r28
- 170:	31 97       	sbiw	r30, 0x01	; 1
- 172:	f1 f7       	brne	.-4      	; 0x170 <main+0x6a>
+ 188:	80 e6       	ldi	r24, 0x60	; 96
+ 18a:	90 e0       	ldi	r25, 0x00	; 0
+ 18c:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
+ 190:	84 ef       	ldi	r24, 0xF4	; 244
+ 192:	91 e0       	ldi	r25, 0x01	; 1
+ 194:	28 ec       	ldi	r18, 0xC8	; 200
+ 196:	30 e0       	ldi	r19, 0x00	; 0
+ 198:	f9 01       	movw	r30, r18
+ 19a:	31 97       	sbiw	r30, 0x01	; 1
+ 19c:	f1 f7       	brne	.-4      	; 0x19a <main+0x94>
 		__ticks = (uint16_t) (__ms * 10.0);
 		while(__ticks)
 		{
 			// wait 1/10 ms
 			_delay_loop_2(((F_CPU) / 4e3) / 10);
 			__ticks --;
- 174:	01 97       	sbiw	r24, 0x01	; 1
+ 19e:	01 97       	sbiw	r24, 0x01	; 1
 		__ticks = 1;
 	else if (__tmp > 65535)
 	{
 		//	__ticks = requested delay in 1/10 ms
 		__ticks = (uint16_t) (__ms * 10.0);
 		while(__ticks)
- 176:	d9 f7       	brne	.-10     	; 0x16e <main+0x68>
+ 1a0:	d9 f7       	brne	.-10     	; 0x198 <main+0x92>
 		_delay_ms(50);
 		Send_A_String(".");
- 178:	88 e6       	ldi	r24, 0x68	; 104
- 17a:	90 e0       	ldi	r25, 0x00	; 0
- 17c:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
- 180:	84 ef       	ldi	r24, 0xF4	; 244
- 182:	91 e0       	ldi	r25, 0x01	; 1
- 184:	fe 01       	movw	r30, r28
- 186:	31 97       	sbiw	r30, 0x01	; 1
- 188:	f1 f7       	brne	.-4      	; 0x186 <main+0x80>
+ 1a2:	88 e6       	ldi	r24, 0x68	; 104
+ 1a4:	90 e0       	ldi	r25, 0x00	; 0
+ 1a6:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
+ 1aa:	84 ef       	ldi	r24, 0xF4	; 244
+ 1ac:	91 e0       	ldi	r25, 0x01	; 1
+ 1ae:	28 ec       	ldi	r18, 0xC8	; 200
+ 1b0:	30 e0       	ldi	r19, 0x00	; 0
+ 1b2:	f9 01       	movw	r30, r18
+ 1b4:	31 97       	sbiw	r30, 0x01	; 1
+ 1b6:	f1 f7       	brne	.-4      	; 0x1b4 <main+0xae>
 		{
 			// wait 1/10 ms
 			_delay_loop_2(((F_CPU) / 4e3) / 10);
 			__ticks --;
- 18a:	01 97       	sbiw	r24, 0x01	; 1
+ 1b8:	01 97       	sbiw	r24, 0x01	; 1
 		__ticks = 1;
 	else if (__tmp > 65535)
 	{
 		//	__ticks = requested delay in 1/10 ms
 		__ticks = (uint16_t) (__ms * 10.0);
 		while(__ticks)
- 18c:	d9 f7       	brne	.-10     	; 0x184 <main+0x7e>
+ 1ba:	d9 f7       	brne	.-10     	; 0x1b2 <main+0xac>
 		_delay_ms(50);
 		Send_A_String(".");
- 18e:	88 e6       	ldi	r24, 0x68	; 104
- 190:	90 e0       	ldi	r25, 0x00	; 0
- 192:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
- 196:	84 ef       	ldi	r24, 0xF4	; 244
- 198:	91 e0       	ldi	r25, 0x01	; 1
- 19a:	fe 01       	movw	r30, r28
- 19c:	31 97       	sbiw	r30, 0x01	; 1
- 19e:	f1 f7       	brne	.-4      	; 0x19c <main+0x96>
+ 1bc:	88 e6       	ldi	r24, 0x68	; 104
+ 1be:	90 e0       	ldi	r25, 0x00	; 0
+ 1c0:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
+ 1c4:	84 ef       	ldi	r24, 0xF4	; 244
+ 1c6:	91 e0       	ldi	r25, 0x01	; 1
+ 1c8:	28 ec       	ldi	r18, 0xC8	; 200
+ 1ca:	30 e0       	ldi	r19, 0x00	; 0
+ 1cc:	f9 01       	movw	r30, r18
+ 1ce:	31 97       	sbiw	r30, 0x01	; 1
+ 1d0:	f1 f7       	brne	.-4      	; 0x1ce <main+0xc8>
 		{
 			// wait 1/10 ms
 			_delay_loop_2(((F_CPU) / 4e3) / 10);
 			__ticks --;
- 1a0:	01 97       	sbiw	r24, 0x01	; 1
+ 1d2:	01 97       	sbiw	r24, 0x01	; 1
 		__ticks = 1;
 	else if (__tmp > 65535)
 	{
 		//	__ticks = requested delay in 1/10 ms
 		__ticks = (uint16_t) (__ms * 10.0);
 		while(__ticks)
- 1a2:	d9 f7       	brne	.-10     	; 0x19a <main+0x94>
+ 1d4:	d9 f7       	brne	.-10     	; 0x1cc <main+0xc6>
 		_delay_ms(50);
 		Send_A_String(".");
- 1a4:	88 e6       	ldi	r24, 0x68	; 104
- 1a6:	90 e0       	ldi	r25, 0x00	; 0
- 1a8:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
- 1ac:	88 ee       	ldi	r24, 0xE8	; 232
- 1ae:	93 e0       	ldi	r25, 0x03	; 3
- 1b0:	fe 01       	movw	r30, r28
- 1b2:	31 97       	sbiw	r30, 0x01	; 1
- 1b4:	f1 f7       	brne	.-4      	; 0x1b2 <main+0xac>
+ 1d6:	88 e6       	ldi	r24, 0x68	; 104
+ 1d8:	90 e0       	ldi	r25, 0x00	; 0
+ 1da:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
+ 1de:	80 ed       	ldi	r24, 0xD0	; 208
+ 1e0:	97 e0       	ldi	r25, 0x07	; 7
+ 1e2:	28 ec       	ldi	r18, 0xC8	; 200
+ 1e4:	30 e0       	ldi	r19, 0x00	; 0
+ 1e6:	f9 01       	movw	r30, r18
+ 1e8:	31 97       	sbiw	r30, 0x01	; 1
+ 1ea:	f1 f7       	brne	.-4      	; 0x1e8 <main+0xe2>
 		{
 			// wait 1/10 ms
 			_delay_loop_2(((F_CPU) / 4e3) / 10);
 			__ticks --;
- 1b6:	01 97       	sbiw	r24, 0x01	; 1
+ 1ec:	01 97       	sbiw	r24, 0x01	; 1
 		__ticks = 1;
 	else if (__tmp > 65535)
 	{
 		//	__ticks = requested delay in 1/10 ms
 		__ticks = (uint16_t) (__ms * 10.0);
 		while(__ticks)
- 1b8:	d9 f7       	brne	.-10     	; 0x1b0 <main+0xaa>
-		_delay_ms(100);
-		
-		Send_A_Command(0x01); //Clears screen 0x01 == 00000001
- 1ba:	81 e0       	ldi	r24, 0x01	; 1
- 1bc:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
- 1c0:	c8 01       	movw	r24, r16
- 1c2:	01 97       	sbiw	r24, 0x01	; 1
- 1c4:	f1 f7       	brne	.-4      	; 0x1c2 <main+0xbc>
-		_delay_ms(2);
-		Send_A_String("Loading Kernel");
- 1c6:	8a e6       	ldi	r24, 0x6A	; 106
- 1c8:	90 e0       	ldi	r25, 0x00	; 0
- 1ca:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
- 1ce:	84 ef       	ldi	r24, 0xF4	; 244
- 1d0:	91 e0       	ldi	r25, 0x01	; 1
- 1d2:	fe 01       	movw	r30, r28
- 1d4:	31 97       	sbiw	r30, 0x01	; 1
- 1d6:	f1 f7       	brne	.-4      	; 0x1d4 <main+0xce>
-		{
-			// wait 1/10 ms
-			_delay_loop_2(((F_CPU) / 4e3) / 10);
-			__ticks --;
- 1d8:	01 97       	sbiw	r24, 0x01	; 1
-		__ticks = 1;
-	else if (__tmp > 65535)
-	{
-		//	__ticks = requested delay in 1/10 ms
-		__ticks = (uint16_t) (__ms * 10.0);
-		while(__ticks)
- 1da:	d9 f7       	brne	.-10     	; 0x1d2 <main+0xcc>
-		_delay_ms(50);
-		Send_A_String(".");
- 1dc:	88 e6       	ldi	r24, 0x68	; 104
- 1de:	90 e0       	ldi	r25, 0x00	; 0
- 1e0:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
- 1e4:	84 ef       	ldi	r24, 0xF4	; 244
- 1e6:	91 e0       	ldi	r25, 0x01	; 1
- 1e8:	fe 01       	movw	r30, r28
- 1ea:	31 97       	sbiw	r30, 0x01	; 1
- 1ec:	f1 f7       	brne	.-4      	; 0x1ea <main+0xe4>
-		{
-			// wait 1/10 ms
-			_delay_loop_2(((F_CPU) / 4e3) / 10);
-			__ticks --;
- 1ee:	01 97       	sbiw	r24, 0x01	; 1
-		__ticks = 1;
-	else if (__tmp > 65535)
-	{
-		//	__ticks = requested delay in 1/10 ms
-		__ticks = (uint16_t) (__ms * 10.0);
-		while(__ticks)
- 1f0:	d9 f7       	brne	.-10     	; 0x1e8 <main+0xe2>
-		_delay_ms(50);
-		Send_A_String(".");
- 1f2:	88 e6       	ldi	r24, 0x68	; 104
- 1f4:	90 e0       	ldi	r25, 0x00	; 0
- 1f6:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
- 1fa:	84 ef       	ldi	r24, 0xF4	; 244
- 1fc:	91 e0       	ldi	r25, 0x01	; 1
- 1fe:	fe 01       	movw	r30, r28
- 200:	31 97       	sbiw	r30, 0x01	; 1
- 202:	f1 f7       	brne	.-4      	; 0x200 <main+0xfa>
-		{
-			// wait 1/10 ms
-			_delay_loop_2(((F_CPU) / 4e3) / 10);
-			__ticks --;
- 204:	01 97       	sbiw	r24, 0x01	; 1
-		__ticks = 1;
-	else if (__tmp > 65535)
-	{
-		//	__ticks = requested delay in 1/10 ms
-		__ticks = (uint16_t) (__ms * 10.0);
-		while(__ticks)
- 206:	d9 f7       	brne	.-10     	; 0x1fe <main+0xf8>
-		_delay_ms(50);
-		Send_A_String(".");
- 208:	88 e6       	ldi	r24, 0x68	; 104
- 20a:	90 e0       	ldi	r25, 0x00	; 0
- 20c:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
- 210:	80 ed       	ldi	r24, 0xD0	; 208
- 212:	97 e0       	ldi	r25, 0x07	; 7
- 214:	fe 01       	movw	r30, r28
- 216:	31 97       	sbiw	r30, 0x01	; 1
- 218:	f1 f7       	brne	.-4      	; 0x216 <main+0x110>
-		{
-			// wait 1/10 ms
-			_delay_loop_2(((F_CPU) / 4e3) / 10);
-			__ticks --;
- 21a:	01 97       	sbiw	r24, 0x01	; 1
-		__ticks = 1;
-	else if (__tmp > 65535)
-	{
-		//	__ticks = requested delay in 1/10 ms
-		__ticks = (uint16_t) (__ms * 10.0);
-		while(__ticks)
- 21c:	d9 f7       	brne	.-10     	; 0x214 <main+0x10e>
- 21e:	1a c0       	rjmp	.+52     	; 0x254 <main+0x14e>
+ 1ee:	d9 f7       	brne	.-10     	; 0x1e6 <main+0xe0>
 		_delay_ms(200);
 		
-		while(prosent<101){
-			Send_A_Command(0x01); //Clears screen 0x01 == 00000001
+		
+		prosent=0;
+ 1f0:	10 92 ad 00 	sts	0x00AD, r1
+ 1f4:	10 92 ac 00 	sts	0x00AC, r1
+		
+		Send_A_Command(0x01); //Clears screen 0x01 == 00000001
+ 1f8:	81 e0       	ldi	r24, 0x01	; 1
+ 1fa:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
+ 1fe:	80 ea       	ldi	r24, 0xA0	; 160
+ 200:	9f e0       	ldi	r25, 0x0F	; 15
+ 202:	01 97       	sbiw	r24, 0x01	; 1
+ 204:	f1 f7       	brne	.-4      	; 0x202 <main+0xfc>
+		_delay_ms(2);
+		Send_A_String("  MATRIX-OS v8");
+ 206:	8a e6       	ldi	r24, 0x6A	; 106
+ 208:	90 e0       	ldi	r25, 0x00	; 0
+ 20a:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
+ 20e:	88 eb       	ldi	r24, 0xB8	; 184
+ 210:	9b e0       	ldi	r25, 0x0B	; 11
+ 212:	28 ec       	ldi	r18, 0xC8	; 200
+ 214:	30 e0       	ldi	r19, 0x00	; 0
+ 216:	f9 01       	movw	r30, r18
+ 218:	31 97       	sbiw	r30, 0x01	; 1
+ 21a:	f1 f7       	brne	.-4      	; 0x218 <main+0x112>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 21c:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 21e:	d9 f7       	brne	.-10     	; 0x216 <main+0x110>
+		_delay_ms(300);
+		Send_A_Command(0x01); //Clears screen 0x01 == 00000001
  220:	81 e0       	ldi	r24, 0x01	; 1
  222:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
- 226:	c8 01       	movw	r24, r16
- 228:	01 97       	sbiw	r24, 0x01	; 1
- 22a:	f1 f7       	brne	.-4      	; 0x228 <main+0x122>
-			_delay_ms(2);
-			Send_A_String(" " + prosent);
- 22c:	80 91 94 00 	lds	r24, 0x0094
- 230:	90 91 95 00 	lds	r25, 0x0095
- 234:	87 58       	subi	r24, 0x87	; 135
- 236:	9f 4f       	sbci	r25, 0xFF	; 255
- 238:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
- 23c:	c7 01       	movw	r24, r14
- 23e:	01 97       	sbiw	r24, 0x01	; 1
- 240:	f1 f7       	brne	.-4      	; 0x23e <main+0x138>
-			_delay_ms(15);
-			prosent++;
- 242:	80 91 94 00 	lds	r24, 0x0094
- 246:	90 91 95 00 	lds	r25, 0x0095
- 24a:	01 96       	adiw	r24, 0x01	; 1
- 24c:	90 93 95 00 	sts	0x0095, r25
- 250:	80 93 94 00 	sts	0x0094, r24
-		Send_A_String(".");
-		_delay_ms(50);
-		Send_A_String(".");
-		_delay_ms(200);
-		
-		while(prosent<101){
- 254:	80 91 94 00 	lds	r24, 0x0094
- 258:	90 91 95 00 	lds	r25, 0x0095
- 25c:	85 36       	cpi	r24, 0x65	; 101
- 25e:	91 05       	cpc	r25, r1
- 260:	fc f2       	brlt	.-66     	; 0x220 <main+0x11a>
-			_delay_ms(2);
-			Send_A_String(" " + prosent);
-			_delay_ms(15);
-			prosent++;
-		}
-		prosent=0;
- 262:	10 92 95 00 	sts	0x0095, r1
- 266:	10 92 94 00 	sts	0x0094, r1
-		
-		Send_A_Command(0x01); //Clears screen 0x01 == 00000001
- 26a:	81 e0       	ldi	r24, 0x01	; 1
- 26c:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
- 270:	c8 01       	movw	r24, r16
- 272:	01 97       	sbiw	r24, 0x01	; 1
- 274:	f1 f7       	brne	.-4      	; 0x272 <main+0x16c>
+ 226:	00 ea       	ldi	r16, 0xA0	; 160
+ 228:	1f e0       	ldi	r17, 0x0F	; 15
+ 22a:	c8 01       	movw	r24, r16
+ 22c:	01 97       	sbiw	r24, 0x01	; 1
+ 22e:	f1 f7       	brne	.-4      	; 0x22c <main+0x126>
 		_delay_ms(2);
-		Send_A_String("      MATRIX-OS v10.4.5");
- 276:	8b e7       	ldi	r24, 0x7B	; 123
- 278:	90 e0       	ldi	r25, 0x00	; 0
- 27a:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
- 27e:	88 eb       	ldi	r24, 0xB8	; 184
- 280:	9b e0       	ldi	r25, 0x0B	; 11
- 282:	fe 01       	movw	r30, r28
- 284:	31 97       	sbiw	r30, 0x01	; 1
- 286:	f1 f7       	brne	.-4      	; 0x284 <main+0x17e>
-		{
-			// wait 1/10 ms
-			_delay_loop_2(((F_CPU) / 4e3) / 10);
-			__ticks --;
- 288:	01 97       	sbiw	r24, 0x01	; 1
-		__ticks = 1;
-	else if (__tmp > 65535)
-	{
-		//	__ticks = requested delay in 1/10 ms
-		__ticks = (uint16_t) (__ms * 10.0);
-		while(__ticks)
- 28a:	d9 f7       	brne	.-10     	; 0x282 <main+0x17c>
-		_delay_ms(300);
 		
+		TCCR1B |= 1<<CS10;
+ 230:	8e b5       	in	r24, 0x2e	; 46
+ 232:	81 60       	ori	r24, 0x01	; 1
+ 234:	8e bd       	out	0x2e, r24	; 46
+		int repeatCount = 0;
+		int timesPressed=0;
+		TCNT1 = 0;
+ 236:	1d bc       	out	0x2d, r1	; 45
+ 238:	1c bc       	out	0x2c, r1	; 44
+		char *repeatString[10];
 		Send_A_Command(0x01); //Clears screen 0x01 == 00000001
- 28c:	81 e0       	ldi	r24, 0x01	; 1
- 28e:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
- 292:	88 eb       	ldi	r24, 0xB8	; 184
- 294:	9b e0       	ldi	r25, 0x0B	; 11
- 296:	fe 01       	movw	r30, r28
- 298:	31 97       	sbiw	r30, 0x01	; 1
- 29a:	f1 f7       	brne	.-4      	; 0x298 <main+0x192>
+ 23a:	81 e0       	ldi	r24, 0x01	; 1
+ 23c:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
+ 240:	c8 01       	movw	r24, r16
+ 242:	01 97       	sbiw	r24, 0x01	; 1
+ 244:	f1 f7       	brne	.-4      	; 0x242 <main+0x13c>
+		_delay_ms(2);
+		Send_A_String("LED ON?    Yes");
+ 246:	89 e7       	ldi	r24, 0x79	; 121
+ 248:	90 e0       	ldi	r25, 0x00	; 0
+ 24a:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
+ 24e:	cc 24       	eor	r12, r12
+ 250:	dd 24       	eor	r13, r13
+ 252:	00 e0       	ldi	r16, 0x00	; 0
+ 254:	10 e0       	ldi	r17, 0x00	; 0
+ 256:	aa 24       	eor	r10, r10
+ 258:	bb 24       	eor	r11, r11
+ 25a:	ee 24       	eor	r14, r14
+ 25c:	ff 24       	eor	r15, r15
+ 25e:	88 24       	eor	r8, r8
+ 260:	99 24       	eor	r9, r9
+				repeatCount++;
+				TCNT1 = 0;
+			}
+			if (repeatCount %100 ==0){
+				Send_A_Command(0x80+40);
+				itoa((500-repeatCount)/100, repeatString, 10);
+ 262:	59 e0       	ldi	r21, 0x09	; 9
+ 264:	65 2e       	mov	r6, r21
+ 266:	71 2c       	mov	r7, r1
+ 268:	6c 0e       	add	r6, r28
+ 26a:	7d 1e       	adc	r7, r29
+ 26c:	44 ef       	ldi	r20, 0xF4	; 244
+ 26e:	24 2e       	mov	r2, r20
+ 270:	41 e0       	ldi	r20, 0x01	; 1
+ 272:	34 2e       	mov	r3, r20
+ 274:	30 e4       	ldi	r19, 0x40	; 64
+ 276:	43 2e       	mov	r4, r19
+ 278:	3f e1       	ldi	r19, 0x1F	; 31
+ 27a:	53 2e       	mov	r5, r19
+		Send_A_String("LED ON?    Yes");
+		while (repeatCount<500){
+			
+			
+			
+			if (bit_is_clear(PINC, Button)){
+ 27c:	9e 99       	sbic	0x13, 6	; 19
+ 27e:	25 c0       	rjmp	.+74     	; 0x2ca <main+0x1c4>
+				Pressed_Confidence_Level++;
+ 280:	0f 5f       	subi	r16, 0xFF	; 255
+ 282:	1f 4f       	sbci	r17, 0xFF	; 255
+				if (Pressed_Confidence_Level > 400){
+ 284:	21 e0       	ldi	r18, 0x01	; 1
+ 286:	01 39       	cpi	r16, 0x91	; 145
+ 288:	12 07       	cpc	r17, r18
+ 28a:	5c f1       	brlt	.+86     	; 0x2e2 <main+0x1dc>
+					if (Pressed==0){
+ 28c:	c1 14       	cp	r12, r1
+ 28e:	d1 04       	cpc	r13, r1
+ 290:	b1 f4       	brne	.+44     	; 0x2be <main+0x1b8>
+						timesPressed++;
+ 292:	08 94       	sec
+ 294:	81 1c       	adc	r8, r1
+ 296:	91 1c       	adc	r9, r1
+						PORTC ^= 1 << LED;
+ 298:	85 b3       	in	r24, 0x15	; 21
+ 29a:	80 58       	subi	r24, 0x80	; 128
+ 29c:	85 bb       	out	0x15, r24	; 21
+						Pressed = 1;
+						Send_A_Command(0x80); //Clears screen 0x01 == 00000001
+ 29e:	80 e8       	ldi	r24, 0x80	; 128
+ 2a0:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
+ 2a4:	80 ea       	ldi	r24, 0xA0	; 160
+ 2a6:	9f e0       	ldi	r25, 0x0F	; 15
+ 2a8:	01 97       	sbiw	r24, 0x01	; 1
+ 2aa:	f1 f7       	brne	.-4      	; 0x2a8 <main+0x1a2>
+						_delay_ms(2);
+						if (timesPressed %2 ==1){
+ 2ac:	80 fe       	sbrs	r8, 0
+ 2ae:	0a c0       	rjmp	.+20     	; 0x2c4 <main+0x1be>
+							Send_A_String("LED ON?    No ");
+ 2b0:	88 e8       	ldi	r24, 0x88	; 136
+ 2b2:	90 e0       	ldi	r25, 0x00	; 0
+ 2b4:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
+ 2b8:	21 e0       	ldi	r18, 0x01	; 1
+ 2ba:	c2 2e       	mov	r12, r18
+ 2bc:	d1 2c       	mov	r13, r1
+ 2be:	00 e0       	ldi	r16, 0x00	; 0
+ 2c0:	10 e0       	ldi	r17, 0x00	; 0
+ 2c2:	0f c0       	rjmp	.+30     	; 0x2e2 <main+0x1dc>
+						}else{
+							Send_A_String("LED ON?    Yes");
+ 2c4:	89 e7       	ldi	r24, 0x79	; 121
+ 2c6:	90 e0       	ldi	r25, 0x00	; 0
+ 2c8:	f5 cf       	rjmp	.-22     	; 0x2b4 <main+0x1ae>
+						
+					}
+					Pressed_Confidence_Level = 0;
+				}
+			}else{
+				Released_Confidence_Level++;
+ 2ca:	08 94       	sec
+ 2cc:	a1 1c       	adc	r10, r1
+ 2ce:	b1 1c       	adc	r11, r1
+				if (Released_Confidence_Level > 400){
+ 2d0:	81 e9       	ldi	r24, 0x91	; 145
+ 2d2:	a8 16       	cp	r10, r24
+ 2d4:	81 e0       	ldi	r24, 0x01	; 1
+ 2d6:	b8 06       	cpc	r11, r24
+ 2d8:	24 f0       	brlt	.+8      	; 0x2e2 <main+0x1dc>
+ 2da:	cc 24       	eor	r12, r12
+ 2dc:	dd 24       	eor	r13, r13
+ 2de:	aa 24       	eor	r10, r10
+ 2e0:	bb 24       	eor	r11, r11
+					Pressed = 0;
+					Released_Confidence_Level = 0;
+				}
+			}
+			if (TCNT1 > 7000){
+ 2e2:	8c b5       	in	r24, 0x2c	; 44
+ 2e4:	9d b5       	in	r25, 0x2d	; 45
+ 2e6:	89 55       	subi	r24, 0x59	; 89
+ 2e8:	9b 41       	sbci	r25, 0x1B	; 27
+ 2ea:	28 f0       	brcs	.+10     	; 0x2f6 <main+0x1f0>
+				repeatCount++;
+ 2ec:	08 94       	sec
+ 2ee:	e1 1c       	adc	r14, r1
+ 2f0:	f1 1c       	adc	r15, r1
+				TCNT1 = 0;
+ 2f2:	1d bc       	out	0x2d, r1	; 45
+ 2f4:	1c bc       	out	0x2c, r1	; 44
+			}
+			if (repeatCount %100 ==0){
+ 2f6:	c7 01       	movw	r24, r14
+ 2f8:	64 e6       	ldi	r22, 0x64	; 100
+ 2fa:	70 e0       	ldi	r23, 0x00	; 0
+ 2fc:	0e 94 dd 01 	call	0x3ba	; 0x3ba <__divmodhi4>
+ 300:	89 2b       	or	r24, r25
+ 302:	c9 f4       	brne	.+50     	; 0x336 <main+0x230>
+				Send_A_Command(0x80+40);
+ 304:	88 ea       	ldi	r24, 0xA8	; 168
+ 306:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
+				itoa((500-repeatCount)/100, repeatString, 10);
+ 30a:	c1 01       	movw	r24, r2
+ 30c:	8e 19       	sub	r24, r14
+ 30e:	9f 09       	sbc	r25, r15
+ 310:	64 e6       	ldi	r22, 0x64	; 100
+ 312:	70 e0       	ldi	r23, 0x00	; 0
+ 314:	0e 94 dd 01 	call	0x3ba	; 0x3ba <__divmodhi4>
+ 318:	cb 01       	movw	r24, r22
+ 31a:	b3 01       	movw	r22, r6
+ 31c:	4a e0       	ldi	r20, 0x0A	; 10
+ 31e:	50 e0       	ldi	r21, 0x00	; 0
+ 320:	0e 94 04 02 	call	0x408	; 0x408 <itoa>
+				Send_A_String(repeatString);
+ 324:	c3 01       	movw	r24, r6
+ 326:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
+ 32a:	c2 01       	movw	r24, r4
+ 32c:	01 97       	sbiw	r24, 0x01	; 1
+ 32e:	f1 f7       	brne	.-4      	; 0x32c <main+0x226>
+				_delay_ms(4);
+				Send_A_Command(0x80);
+ 330:	80 e8       	ldi	r24, 0x80	; 128
+ 332:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
+		TCNT1 = 0;
+		char *repeatString[10];
+		Send_A_Command(0x01); //Clears screen 0x01 == 00000001
+		_delay_ms(2);
+		Send_A_String("LED ON?    Yes");
+		while (repeatCount<500){
+ 336:	84 ef       	ldi	r24, 0xF4	; 244
+ 338:	e8 16       	cp	r14, r24
+ 33a:	81 e0       	ldi	r24, 0x01	; 1
+ 33c:	f8 06       	cpc	r15, r24
+ 33e:	0c f4       	brge	.+2      	; 0x342 <main+0x23c>
+ 340:	9d cf       	rjmp	.-198    	; 0x27c <main+0x176>
+				Send_A_Command(0x80);
+			}
+		}
+		
+	
+	Send_A_Command(0x01); //Clears screen 0x01 == 00000001
+ 342:	81 e0       	ldi	r24, 0x01	; 1
+ 344:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
+ 348:	80 ea       	ldi	r24, 0xA0	; 160
+ 34a:	9f e0       	ldi	r25, 0x0F	; 15
+ 34c:	01 97       	sbiw	r24, 0x01	; 1
+ 34e:	f1 f7       	brne	.-4      	; 0x34c <main+0x246>
+ 350:	00 e0       	ldi	r16, 0x00	; 0
+ 352:	10 e0       	ldi	r17, 0x00	; 0
+	//LCDen er på 0 og 40 
+	
+		for(int x = 0;x<55;x++){
+			Send_A_Command(0x80 + x);//1. set the current location
+			Send_A_String("MATRIX OS");	//2. put an x at that location
+			itoa(x, positionString, 10);
+ 354:	6e 01       	movw	r12, r28
+ 356:	08 94       	sec
+ 358:	c1 1c       	adc	r12, r1
+ 35a:	d1 1c       	adc	r13, r1
+ 35c:	98 ec       	ldi	r25, 0xC8	; 200
+ 35e:	a9 2e       	mov	r10, r25
+ 360:	b1 2c       	mov	r11, r1
+	while(1){
+	
+	//LCDen er på 0 og 40 
+	
+		for(int x = 0;x<55;x++){
+			Send_A_Command(0x80 + x);//1. set the current location
+ 362:	80 e8       	ldi	r24, 0x80	; 128
+ 364:	f8 2e       	mov	r15, r24
+ 366:	f0 0e       	add	r15, r16
+ 368:	8f 2d       	mov	r24, r15
+ 36a:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
+			Send_A_String("MATRIX OS");	//2. put an x at that location
+ 36e:	87 e9       	ldi	r24, 0x97	; 151
+ 370:	90 e0       	ldi	r25, 0x00	; 0
+ 372:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
+			itoa(x, positionString, 10);
+ 376:	c8 01       	movw	r24, r16
+ 378:	b6 01       	movw	r22, r12
+ 37a:	4a e0       	ldi	r20, 0x0A	; 10
+ 37c:	50 e0       	ldi	r21, 0x00	; 0
+ 37e:	0e 94 04 02 	call	0x408	; 0x408 <itoa>
+			Send_A_Command(0x80+57); //54 bra 
+ 382:	89 eb       	ldi	r24, 0xB9	; 185
+ 384:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
+			Send_A_String(positionString);//3. Display the location as a number
+ 388:	c6 01       	movw	r24, r12
+ 38a:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
+ 38e:	84 ef       	ldi	r24, 0xF4	; 244
+ 390:	91 e0       	ldi	r25, 0x01	; 1
+ 392:	f5 01       	movw	r30, r10
+ 394:	31 97       	sbiw	r30, 0x01	; 1
+ 396:	f1 f7       	brne	.-4      	; 0x394 <main+0x28e>
 		{
 			// wait 1/10 ms
 			_delay_loop_2(((F_CPU) / 4e3) / 10);
 			__ticks --;
- 29c:	01 97       	sbiw	r24, 0x01	; 1
+ 398:	01 97       	sbiw	r24, 0x01	; 1
 		__ticks = 1;
 	else if (__tmp > 65535)
 	{
 		//	__ticks = requested delay in 1/10 ms
 		__ticks = (uint16_t) (__ms * 10.0);
 		while(__ticks)
- 29e:	d9 f7       	brne	.-10     	; 0x296 <main+0x190>
- 2a0:	5a cf       	rjmp	.-332    	; 0x156 <main+0x50>
+ 39a:	d9 f7       	brne	.-10     	; 0x392 <main+0x28c>
+			_delay_ms(50);//4. Add a delay to slow it down
+			Send_A_Command(0x80 + x);//5. go back to the location
+ 39c:	8f 2d       	mov	r24, r15
+ 39e:	0e 94 5d 00 	call	0xba	; 0xba <Send_A_Command>
+			Send_A_String("         ");//6. Put a space.
+ 3a2:	81 ea       	ldi	r24, 0xA1	; 161
+ 3a4:	90 e0       	ldi	r25, 0x00	; 0
+ 3a6:	0e 94 76 00 	call	0xec	; 0xec <Send_A_String>
+	
+	while(1){
+	
+	//LCDen er på 0 og 40 
+	
+		for(int x = 0;x<55;x++){
+ 3aa:	0f 5f       	subi	r16, 0xFF	; 255
+ 3ac:	1f 4f       	sbci	r17, 0xFF	; 255
+ 3ae:	07 33       	cpi	r16, 0x37	; 55
+ 3b0:	11 05       	cpc	r17, r1
+ 3b2:	bc f2       	brlt	.-82     	; 0x362 <main+0x25c>
+ 3b4:	00 e0       	ldi	r16, 0x00	; 0
+ 3b6:	10 e0       	ldi	r17, 0x00	; 0
+ 3b8:	d4 cf       	rjmp	.-88     	; 0x362 <main+0x25c>
 
-000002a2 <_exit>:
- 2a2:	f8 94       	cli
+000003ba <__divmodhi4>:
+ 3ba:	97 fb       	bst	r25, 7
+ 3bc:	09 2e       	mov	r0, r25
+ 3be:	07 26       	eor	r0, r23
+ 3c0:	0a d0       	rcall	.+20     	; 0x3d6 <__divmodhi4_neg1>
+ 3c2:	77 fd       	sbrc	r23, 7
+ 3c4:	04 d0       	rcall	.+8      	; 0x3ce <__divmodhi4_neg2>
+ 3c6:	0c d0       	rcall	.+24     	; 0x3e0 <__udivmodhi4>
+ 3c8:	06 d0       	rcall	.+12     	; 0x3d6 <__divmodhi4_neg1>
+ 3ca:	00 20       	and	r0, r0
+ 3cc:	1a f4       	brpl	.+6      	; 0x3d4 <__divmodhi4_exit>
 
-000002a4 <__stop_program>:
- 2a4:	ff cf       	rjmp	.-2      	; 0x2a4 <__stop_program>
+000003ce <__divmodhi4_neg2>:
+ 3ce:	70 95       	com	r23
+ 3d0:	61 95       	neg	r22
+ 3d2:	7f 4f       	sbci	r23, 0xFF	; 255
+
+000003d4 <__divmodhi4_exit>:
+ 3d4:	08 95       	ret
+
+000003d6 <__divmodhi4_neg1>:
+ 3d6:	f6 f7       	brtc	.-4      	; 0x3d4 <__divmodhi4_exit>
+ 3d8:	90 95       	com	r25
+ 3da:	81 95       	neg	r24
+ 3dc:	9f 4f       	sbci	r25, 0xFF	; 255
+ 3de:	08 95       	ret
+
+000003e0 <__udivmodhi4>:
+ 3e0:	aa 1b       	sub	r26, r26
+ 3e2:	bb 1b       	sub	r27, r27
+ 3e4:	51 e1       	ldi	r21, 0x11	; 17
+ 3e6:	07 c0       	rjmp	.+14     	; 0x3f6 <__udivmodhi4_ep>
+
+000003e8 <__udivmodhi4_loop>:
+ 3e8:	aa 1f       	adc	r26, r26
+ 3ea:	bb 1f       	adc	r27, r27
+ 3ec:	a6 17       	cp	r26, r22
+ 3ee:	b7 07       	cpc	r27, r23
+ 3f0:	10 f0       	brcs	.+4      	; 0x3f6 <__udivmodhi4_ep>
+ 3f2:	a6 1b       	sub	r26, r22
+ 3f4:	b7 0b       	sbc	r27, r23
+
+000003f6 <__udivmodhi4_ep>:
+ 3f6:	88 1f       	adc	r24, r24
+ 3f8:	99 1f       	adc	r25, r25
+ 3fa:	5a 95       	dec	r21
+ 3fc:	a9 f7       	brne	.-22     	; 0x3e8 <__udivmodhi4_loop>
+ 3fe:	80 95       	com	r24
+ 400:	90 95       	com	r25
+ 402:	bc 01       	movw	r22, r24
+ 404:	cd 01       	movw	r24, r26
+ 406:	08 95       	ret
+
+00000408 <itoa>:
+ 408:	fb 01       	movw	r30, r22
+ 40a:	9f 01       	movw	r18, r30
+ 40c:	e8 94       	clt
+ 40e:	42 30       	cpi	r20, 0x02	; 2
+ 410:	c4 f0       	brlt	.+48     	; 0x442 <itoa+0x3a>
+ 412:	45 32       	cpi	r20, 0x25	; 37
+ 414:	b4 f4       	brge	.+44     	; 0x442 <itoa+0x3a>
+ 416:	4a 30       	cpi	r20, 0x0A	; 10
+ 418:	29 f4       	brne	.+10     	; 0x424 <itoa+0x1c>
+ 41a:	97 fb       	bst	r25, 7
+ 41c:	1e f4       	brtc	.+6      	; 0x424 <itoa+0x1c>
+ 41e:	90 95       	com	r25
+ 420:	81 95       	neg	r24
+ 422:	9f 4f       	sbci	r25, 0xFF	; 255
+ 424:	64 2f       	mov	r22, r20
+ 426:	77 27       	eor	r23, r23
+ 428:	0e 94 f0 01 	call	0x3e0	; 0x3e0 <__udivmodhi4>
+ 42c:	80 5d       	subi	r24, 0xD0	; 208
+ 42e:	8a 33       	cpi	r24, 0x3A	; 58
+ 430:	0c f0       	brlt	.+2      	; 0x434 <itoa+0x2c>
+ 432:	89 5d       	subi	r24, 0xD9	; 217
+ 434:	81 93       	st	Z+, r24
+ 436:	cb 01       	movw	r24, r22
+ 438:	00 97       	sbiw	r24, 0x00	; 0
+ 43a:	a1 f7       	brne	.-24     	; 0x424 <itoa+0x1c>
+ 43c:	16 f4       	brtc	.+4      	; 0x442 <itoa+0x3a>
+ 43e:	5d e2       	ldi	r21, 0x2D	; 45
+ 440:	51 93       	st	Z+, r21
+ 442:	10 82       	st	Z, r1
+ 444:	c9 01       	movw	r24, r18
+ 446:	0c 94 25 02 	jmp	0x44a	; 0x44a <strrev>
+
+0000044a <strrev>:
+ 44a:	dc 01       	movw	r26, r24
+ 44c:	fc 01       	movw	r30, r24
+ 44e:	67 2f       	mov	r22, r23
+ 450:	71 91       	ld	r23, Z+
+ 452:	77 23       	and	r23, r23
+ 454:	e1 f7       	brne	.-8      	; 0x44e <strrev+0x4>
+ 456:	32 97       	sbiw	r30, 0x02	; 2
+ 458:	04 c0       	rjmp	.+8      	; 0x462 <strrev+0x18>
+ 45a:	7c 91       	ld	r23, X
+ 45c:	6d 93       	st	X+, r22
+ 45e:	70 83       	st	Z, r23
+ 460:	62 91       	ld	r22, -Z
+ 462:	ae 17       	cp	r26, r30
+ 464:	bf 07       	cpc	r27, r31
+ 466:	c8 f3       	brcs	.-14     	; 0x45a <strrev+0x10>
+ 468:	08 95       	ret
+
+0000046a <_exit>:
+ 46a:	f8 94       	cli
+
+0000046c <__stop_program>:
+ 46c:	ff cf       	rjmp	.-2      	; 0x46c <__stop_program>
